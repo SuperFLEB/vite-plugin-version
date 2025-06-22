@@ -20,9 +20,9 @@ function getVersionInfo(root: string): VersionInfo {
   const semver = semverMatch ? semverMatch.slice(0, 3).map(v => Number(v)) as [number, number, number] : undefined;
   return {
     name: pj.name,
+    description: pj.description,
     version: pj.version,
     semver,
-    description: pj.description,
     buildTime: new Date().getTime(),
   };
 }
@@ -45,7 +45,7 @@ export default function versionPlugin() {
     },
     load(id: string) {
       if (id === resolvedVirtualModuleId) {
-        return `export default ${JSON.stringify(versionInfo)};`;
+        return `export default function versionInfo() { return ${JSON.stringify(versionInfo)}; }`;
       }
     },
   };

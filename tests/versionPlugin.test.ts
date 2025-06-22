@@ -19,17 +19,17 @@ describe("Version info plugin", () => {
       root: join(__dirname, "mock"),
     } as ResolvedConfig);
 
-    const loaded = plugin.load("\0@superfleb/version") as string;
-    expect(loaded).toMatch(/^export default \{.+?};/);
-    const jsonSlice = loaded.slice("export default ".length, -1);
-    expect(JSON.parse(jsonSlice)).toEqual({
+    const loaded = plugin.load("\0@superfleb/vite-plugin-versioninfo") as string;
+    const jsonMatch = loaded.match(/^export default function versionInfo\(\) \{ return \{(.+?)}; }$/);
+    expect(jsonMatch).not.toBeNull();
+    expect(JSON.parse(`{${jsonMatch[1]}}`)).toEqual({
       ...versionInfo,
       buildTime: expect.any(Number),
     });
   });
 
   it("Resolves the virtual module ID to the temporary ID", () => {
-    expect(plugin.resolveId("@superfleb/version")).toBe("\0@superfleb/version");
+    expect(plugin.resolveId("@superfleb/vite-plugin-versioninfo")).toBe("\0@superfleb/vite-plugin-versioninfo");
   });
 
   it("Does not resolve other module IDs", () => {

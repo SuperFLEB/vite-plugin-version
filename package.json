@@ -1,6 +1,6 @@
 {
-  "name": "@superfleb/version",
-  "version": "0.0.2",
+  "name": "@superfleb/vite-plugin-versioninfo",
+  "version": "0.0.4",
   "type": "module",
   "packageManager": "yarn@4.9.2",
   "devDependencies": {
