@@ -1,0 +1,36 @@
+{
+  "name": "@superfleb/version",
+  "version": "0.0.2",
+  "type": "module",
+  "packageManager": "yarn@4.9.2",
+  "devDependencies": {
+    "@superfleb/bump": "^1.0.1",
+    "@types/node": "^24.0.3",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.4"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./plugin": {
+      "import": "./dist/plugin.js",
+      "types": "./dist/plugin.d.ts"
+    }
+  },
+  "scripts": {
+    "test": "vitest run",
+    "build": "vitest run && tsc",
+    "prep": "vitest run && tsc && bump ."
+  },
+  "peerDependencies": {
+    "vite": "*"
+  },
+  "files": [
+    "./dist",
+    "README.md",
+    "package.json"
+  ]
+}
