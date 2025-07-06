@@ -390,9 +390,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@superfleb/vite-plugin-versioninfo@workspace:.":
+"@superfleb/vite-plugin-version@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@superfleb/vite-plugin-versioninfo@workspace:."
+  resolution: "@superfleb/vite-plugin-version@workspace:."
   dependencies:
     "@superfleb/bump": "npm:^1.0.1"
     "@types/node": "npm:^24.0.3"
