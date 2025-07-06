@@ -4,6 +4,8 @@ import type {ResolvedConfig} from "vite";
 import {describe, expect, it} from "vitest";
 
 const __dirname = import.meta.dirname;
+const PACKAGE_NAME = "@superfleb/vite-plugin-version";
+
 const versionInfo = {
   "name": "@superfleb/test-module",
   "description": "Test module",
@@ -19,7 +21,7 @@ describe("Version info plugin", () => {
       root: join(__dirname, "mock"),
     } as ResolvedConfig);
 
-    const loaded = plugin.load("\0@superfleb/vite-plugin-versioninfo") as string;
+    const loaded = plugin.load(`\0${PACKAGE_NAME}`) as string;
     const jsonMatch = loaded.match(/^export default function versionInfo\(\) \{ return \{(.+?)}; }$/);
     expect(jsonMatch).not.toBeNull();
     expect(JSON.parse(`{${jsonMatch[1]}}`)).toEqual({
@@ -29,7 +31,7 @@ describe("Version info plugin", () => {
   });
 
   it("Resolves the virtual module ID to the temporary ID", () => {
-    expect(plugin.resolveId("@superfleb/vite-plugin-versioninfo")).toBe("\0@superfleb/vite-plugin-versioninfo");
+    expect(plugin.resolveId("@superfleb/vite-plugin-version")).toBe(`\0${PACKAGE_NAME}`);
   });
 
   it("Does not resolve other module IDs", () => {
