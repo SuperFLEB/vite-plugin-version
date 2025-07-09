@@ -16,14 +16,13 @@
       "types": "./dist/index.d.ts"
     },
     "./plugin": {
-      "require": "./dist/plugin-cjs/plugin.js",
       "import": "./dist/plugin.js",
       "types": "./dist/plugin.d.ts"
     }
   },
   "scripts": {
     "test": "vitest run",
-    "build": "vitest run && tsc && tsc -p tsconfig.cjs.json",
+    "build": "vitest run && tsc",
     "prep": "yarn build && bump ."
   },
   "peerDependencies": {
