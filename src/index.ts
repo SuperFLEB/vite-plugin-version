@@ -1,11 +1,4 @@
-export type VersionInfo = {
-  name: string;
-  description?: string;
-  version: string;
-  semver?: [number, number, number];
-  buildTime: number;
-};
-
+import type {VersionInfo} from "./types";
 // This will be replaced with the actual values by the plugin
 export default function versionInfo(): VersionInfo {
   return {

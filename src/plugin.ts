@@ -1,9 +1,19 @@
-import type {ResolvedConfig} from "vite";
+import type {ResolvedConfig, Plugin} from "vite";
 import {readFileSync} from "node:fs";
 import {join} from "node:path";
-import type {VersionInfo} from "./index";
+import type {VersionInfo} from "./types";
 
-const selfPJPath = join(import.meta.dirname, "..", "package.json");
+let dirname: string = "";
+if (typeof __dirname === 'string') {
+  dirname = __dirname;
+} else {
+  // @ts-ignore
+  dirname = import.meta.dirname;
+}
+
+if (!dirname) throw new Error("Unable to determine the directory name");
+
+const selfPJPath = join(dirname, "..", "package.json");
 const selfPackageJson = JSON.parse(readFileSync(selfPJPath).toString());
 const packageImportName = selfPackageJson.name;
 
@@ -27,14 +37,14 @@ function getVersionInfo(root: string): VersionInfo {
   };
 }
 
-export default function versionPlugin() {
+export default function versionPlugin(): Plugin {
   const virtualModuleId = packageImportName;
   const resolvedVirtualModuleId = "\0" + virtualModuleId;
   let versionInfo: VersionInfo = {} as VersionInfo;
 
   return {
     name: "Version Plugin",
-    enforce: "pre",
+    enforce: "pre" as const,
     configResolved(config: ResolvedConfig) {
       versionInfo = getVersionInfo(config.root);
     },

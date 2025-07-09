@@ -1,6 +1,6 @@
 {
   "name": "@superfleb/vite-plugin-version",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "packageManager": "yarn@4.9.2",
   "devDependencies": {
@@ -16,14 +16,15 @@
       "types": "./dist/index.d.ts"
     },
     "./plugin": {
+      "require": "./dist/plugin-cjs/plugin.js",
       "import": "./dist/plugin.js",
       "types": "./dist/plugin.d.ts"
     }
   },
   "scripts": {
     "test": "vitest run",
-    "build": "vitest run && tsc",
-    "prep": "vitest run && tsc && bump ."
+    "build": "vitest run && tsc && tsc -p tsconfig.cjs.json",
+    "prep": "yarn build && bump ."
   },
   "peerDependencies": {
     "vite": "*"

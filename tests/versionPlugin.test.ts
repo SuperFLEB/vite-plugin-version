@@ -1,31 +1,44 @@
 import versionPlugin from "../src/plugin.js";
-import {join} from "node:path";
 import type {ResolvedConfig} from "vite";
-import {describe, expect, it} from "vitest";
+import {describe, expect, it, vi} from "vitest";
 
-const __dirname = import.meta.dirname;
 const PACKAGE_NAME = "@superfleb/vite-plugin-version";
 
-const versionInfo = {
-  "name": "@superfleb/test-module",
-  "description": "Test module",
-  "version": "1.2.3",
-  "semver": [1, 2, 3],
-};
+const packageJsons = vi.hoisted(() => ({
+  package: {
+    "name": "@superfleb/test-module",
+    "description": "Test module",
+    "version": "1.2.3"
+  },
+  self: {
+    "name": "@superfleb/vite-plugin-version",
+    "description": "Mock of this module",
+    "version": "3.2.1",
+  }
+}));
+
+vi.mock("node:fs", () => ({
+  readFileSync(reqPath: string) {
+    if (/mock-package-dir.package\.json$/.test(reqPath)) return JSON.stringify(packageJsons.package);
+    if (/package\.json$/.test(reqPath)) return JSON.stringify(packageJsons.self);
+    throw new Error(`Unknown file ${reqPath} requested`);
+  }
+}));
 
 describe("Version info plugin", () => {
   const plugin = versionPlugin();
 
   it("Gets the specified package.json in configResolved", () => {
     plugin.configResolved({
-      root: join(__dirname, "mock"),
+      root: "mock-package-dir",
     } as ResolvedConfig);
 
     const loaded = plugin.load(`\0${PACKAGE_NAME}`) as string;
     const jsonMatch = loaded.match(/^export default function versionInfo\(\) \{ return \{(.+?)}; }$/);
     expect(jsonMatch).not.toBeNull();
     expect(JSON.parse(`{${jsonMatch[1]}}`)).toEqual({
-      ...versionInfo,
+      ...packageJsons.package,
+      semver: [1,2,3], // from packageJsons.package.version
       buildTime: expect.any(Number),
     });
   });
