@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "es2022",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "declaration": true,
     "declarationDir": "./dist",
     "esModuleInterop": true,
